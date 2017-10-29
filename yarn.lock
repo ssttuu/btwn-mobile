@@ -4522,6 +4522,10 @@ react-native-button@^2.0.0:
   dependencies:
     prop-types "^15.5.10"
 
+react-native-contacts@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/react-native-contacts/-/react-native-contacts-1.0.3.tgz#1e8e263916b2a7dcf856d93cdabbf82ad1d3fab1"
+
 react-native-dismiss-keyboard@1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/react-native-dismiss-keyboard/-/react-native-dismiss-keyboard-1.0.0.tgz#32886242b3f2317e121f3aeb9b0a585e2b879b49"

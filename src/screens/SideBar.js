@@ -1,8 +1,10 @@
 import React, {Component} from 'react';
-import {ScrollView, Text, TouchableWithoutFeedback, View} from "react-native";
+import {ScrollView, Text, TouchableOpacity, View} from "react-native";
 import CurrentUser from "../components/CurrentUser";
 import GroupsList from "../components/GroupsList";
 import {Icon} from "react-native-elements";
+import {Actions} from "react-native-router-flux";
+import {CREATE_GROUP_SCREEN} from "../RouterTypes";
 
 /*
     CurrentUserComponent
@@ -13,6 +15,10 @@ class SideBar extends Component {
     componentWillMount() {
     }
 
+    onAddGroupButtonPress() {
+        Actions.push(CREATE_GROUP_SCREEN)
+    }
+
     render() {
         const {scrollViewStyle, groupsHeaderStyle, groupsTextStyle, addGroupStyle} = styles;
         return (
@@ -21,9 +27,9 @@ class SideBar extends Component {
 
                 <View style={groupsHeaderStyle}>
                     <Text style={groupsTextStyle}>Groups</Text>
-                    <TouchableWithoutFeedback style={addGroupStyle}>
+                    <TouchableOpacity style={addGroupStyle} onPress={() => this.onAddGroupButtonPress()}>
                         <Icon name='add-circle'/>
-                    </TouchableWithoutFeedback>
+                    </TouchableOpacity>
                 </View>
                 <GroupsList/>
             </ScrollView>
