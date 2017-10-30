@@ -1,4 +1,4 @@
-const HOST = 'http://10.0.2.2:10000/v1/';
+import {HOST} from "./constants";
 
 export const sendVerificationCode = ({phoneNumber}) => {
     return fetch(`${HOST}users/verification`, {

@@ -6,6 +6,8 @@ import {Icon} from "react-native-elements";
 import {Actions} from "react-native-router-flux";
 import {CREATE_GROUP_SCREEN} from "../RouterTypes";
 
+const Contacts = require('react-native-contacts');
+
 /*
     CurrentUserComponent
     GroupsListComponent
@@ -13,6 +15,7 @@ import {CREATE_GROUP_SCREEN} from "../RouterTypes";
 class SideBar extends Component {
 
     componentWillMount() {
+        console.log(`CONTACTS: ${Contacts}`)
     }
 
     onAddGroupButtonPress() {

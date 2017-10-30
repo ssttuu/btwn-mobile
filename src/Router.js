@@ -12,11 +12,9 @@ import {
     MAIN_SCREEN
 } from "./RouterTypes";
 import CreateGroupScreen from "./screens/CreateGroupModal";
-import {Text, TouchableOpacity} from "react-native";
-import {Icon} from "react-native-elements";
 
 
-const RouterComponent = () => {
+const RouterComponent = (props) => {
     return (
         <Router>
             <Stack key="base">
@@ -41,16 +39,10 @@ const RouterComponent = () => {
                 </Drawer>
 
                 <Modal key={CREATE_GROUP_SCREEN}
-                       renderRightButton={() => {
-                           return (
-                               <TouchableOpacity onPress={() => 'custom right'}>
-                                   <Icon name='check'/>
-                               </TouchableOpacity>
-                           );
-                       }}
-                       onRight={() => console.log('right')}
                        component={CreateGroupScreen}
-                       title="Create Group"
+                       title='Create Group'
+                       rightTitle='Create'
+                       onRight={() => console.log('logOnRight')}
                 />
 
             </Stack>

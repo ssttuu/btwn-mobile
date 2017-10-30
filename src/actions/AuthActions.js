@@ -22,10 +22,14 @@ export const verificationCodeChanged = (text) => {
     };
 };
 
-export const checkCurrentUser = () => async (dispatch) => {
+export const getCurrentUser = async () => {
     let currentUser = await AsyncStorage.getItem('current_user');
-    if (currentUser) {
-        let {user, jwt} = JSON.parse(currentUser);
+    return JSON.parse(currentUser);
+};
+
+export const checkCurrentUser = () => async (dispatch) => {
+    let {user, jwt} = await getCurrentUser();
+    if (user && jwt) {
         dispatch({type: LOGIN_SUCCESS, payload: {user, jwt} });
         Actions.replace(MAIN_SCREEN);
         Actions.drawerOpen();

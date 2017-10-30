@@ -1,0 +1,4 @@
+
+export const ANDROID_EMULATOR_LOCALHOST = '10.0.2.2';
+export const GENYMOTION_EMULATOR_LOCALHOST = '10.0.3.2';
+export const HOST = `http://${GENYMOTION_EMULATOR_LOCALHOST}:10000/v1/`;
