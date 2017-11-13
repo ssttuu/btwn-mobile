@@ -71,6 +71,7 @@ export const login = ({phoneNumber, code}) => async (dispatch) => {
     }
 
     let {user, jwt} = await response.json();
+    console.log(user, jwt);
     await AsyncStorage.setItem('current_user', JSON.stringify({user, jwt}));
     dispatch({type: LOGIN_SUCCESS, payload: {user, jwt}});
     Actions.replace(MAIN_SCREEN);

@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Text, View} from "react-native";
 import {Avatar, Badge, FormInput} from 'react-native-elements';
 import ContactsList from "../components/ContactsList";
-import {getLocalContacts} from "../actions/ContactsActions";
+import {getLocalContacts, uploadContacts} from "../actions/ContactsActions";
 import {connect} from "react-redux";
 import _ from 'lodash';
 import {contactPressed, searchTextChanged, createGroupPressed} from "../actions/NewGroupActions";
@@ -10,7 +10,7 @@ import {Actions} from "react-native-router-flux";
 
 class CreateGroupModal extends Component {
     componentWillMount() {
-        this.props.getLocalContacts();
+        this.props.uploadContacts();
     }
 
     componentDidMount() {
@@ -18,8 +18,10 @@ class CreateGroupModal extends Component {
         Actions.refresh({onRight: () => this.createGroupButtonPressed()})
     }
 
-    createGroupButtonPressed() {
-        this.props.createGroupPressed(this.props.selected)
+    async createGroupButtonPressed() {
+        await this.props.createGroupPressed(this.props.selected);
+        Actions.pop();
+
     }
 
     onSearchTextChange(text) {
@@ -34,8 +36,15 @@ class CreateGroupModal extends Component {
         const {syncedContacts, selected} = this.props;
         return _.map(selected, (id, index) => {
             const contact = syncedContacts[id];
+            console.log(contact);
+            if (contact === undefined) {
+                return;
+            }
             const {first_name, last_name} = contact;
             const fullName = `${first_name} ${last_name}`;
+            if (first_name === undefined || last_name === undefined) {
+                return;
+            }
             const initials = `${first_name.charAt(0).toUpperCase()}${last_name.charAt(0).toUpperCase()}`;
 
             return (
@@ -96,6 +105,7 @@ const mapStateToProps = (state) => {
 
 export default connect(mapStateToProps, {
     getLocalContacts,
+    uploadContacts,
     contactPressed,
     searchTextChanged,
     createGroupPressed

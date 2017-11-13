@@ -1,6 +1,9 @@
+import _ from 'lodash';
 
-
-import {GET_LOCAL_CONTACTS, GET_LOCAL_CONTACTS_FAILURE, GET_LOCAL_CONTACTS_SUCCESS} from "../actions/types";
+import {
+    GET_CONTACTS, GET_CONTACTS_FAILURE, GET_CONTACTS_SUCCESS, GET_LOCAL_CONTACTS, GET_LOCAL_CONTACTS_FAILURE,
+    GET_LOCAL_CONTACTS_SUCCESS, UPLOAD_CONTACTS, UPLOAD_CONTACTS_FAILURE, UPLOAD_CONTACTS_SUCCESS
+} from "../actions/types";
 
 const INITIAL_STATE = {
     local: [],
@@ -40,6 +43,23 @@ export default (state = INITIAL_STATE, action) => {
             return {...state, local: action.payload};
         case GET_LOCAL_CONTACTS_FAILURE:
             return {...state};
+        case GET_CONTACTS:
+            return {...state};
+        case GET_CONTACTS_SUCCESS:
+            console.log('GET_CONTACTS_SUCCESS');
+            console.log(action.payload);
+            return {...state, synced: _.keyBy(action.payload.contacts, 'id')};
+        case GET_CONTACTS_FAILURE:
+            return {...state};
+        case UPLOAD_CONTACTS:
+            return {...state};
+        case UPLOAD_CONTACTS_SUCCESS:
+            console.log('UPLOAD_CONTACTS_SUCCESS');
+            console.log(action.payload);
+            return {...state, synced: _.keyBy(action.payload.contacts, 'id')};
+        case UPLOAD_CONTACTS_FAILURE:
+            return {...state};
+
         default:
             return state;
     }

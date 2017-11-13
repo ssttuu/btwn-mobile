@@ -10,11 +10,20 @@ export const create = ({jwt, userId, memberIds}) => {
             'Authorization': `Bearer ${jwt}`
         },
         body: JSON.stringify({
-            member_ids: memberIds,
+            member_ids: [userId, ...memberIds],
         })
     }).catch(error => {
         console.error(error);
-    }).then(response => {
-        console.log(response);
-    })
+    });
+};
+
+export const list = ({jwt, userId}) => {
+    return fetch(`${HOST}users/${userId}/groups`, {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${jwt}`
+        },
+    });
 };

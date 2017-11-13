@@ -1,16 +1,4 @@
 {
-  "expo": {
-    "sdkVersion": "21.0.0",
-    "android": {
-      "package": "com.btwn.btwn"
-    },
-    "name": "btwn",
-    "slug": "btwn",
-    "version": "0.1.0",
-    "isDetached": true,
-    "detach": {
-      "scheme": "expcde2b0092b084c9b8b9f8b85bd3c916b",
-      "androidExpoViewUrl": "https://s3.amazonaws.com/exp-exponent-view-code/android-v1.20.0-sdk21.0.0-38791499-fe99-4600-950d-cf7e2e85cea9.tar.gz"
-    }
-  }
+  "name": "btwn",
+  "displayName": "btwn"
 }

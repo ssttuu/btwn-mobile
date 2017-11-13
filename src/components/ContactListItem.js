@@ -33,6 +33,7 @@ class ContactListItem extends Component {
     render() {
 
         const {id, first_name, last_name, phone_number, joined} = this.props.contact;
+        console.log('this.props.contact', this.props.contact);
         const fullName = `${first_name} ${last_name}`;
         const initials = `${first_name.charAt(0).toUpperCase()}${last_name.charAt(0).toUpperCase()}`;
 

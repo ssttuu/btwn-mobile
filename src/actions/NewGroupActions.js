@@ -1,6 +1,7 @@
 import {CONTACT_PRESSED, CREATE_GROUP, CREATE_GROUP_FAILURE, CREATE_GROUP_SUCCESS, SEARCH_TEXT_CHANGED} from "./types";
 import * as Groups from '../api/Groups';
 import {getCurrentUser} from "./AuthActions";
+import {Actions} from "react-native-router-flux";
 
 export const contactPressed = ({contactId}) => {
     return {
@@ -26,14 +27,12 @@ export const createGroupPressed = (selected) => async (dispatch) => {
     console.log(user);
     console.log(jwt);
 
-    let response = null;
-    try {
-        response = await Groups.create({jwt, userId: user.id, memberIds: selected})
-    } catch (e) {
-        dispatch({type: CREATE_GROUP_FAILURE})
-    }
-
-
-    let group = await response.json();
-    dispatch({type: CREATE_GROUP_SUCCESS, payload: group})
+    Groups.create({jwt, userId: user.id, memberIds: selected})
+        .then((response) => response.json())
+        .then((response) => {
+            dispatch({type: CREATE_GROUP_SUCCESS, payload: response});
+        })
+        .catch((err) => {
+            dispatch({type: CREATE_GROUP_FAILURE, payload: err});
+        });
 };

@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {Text, View} from "react-native";
 import {connect} from 'react-redux';
-import {MapView} from "expo";
 import {Avatar, ButtonGroup, FormLabel, Icon} from "react-native-elements";
 
 class CurrentUser extends Component {
