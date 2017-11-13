@@ -32,3 +32,4 @@ export const CREATE_GROUP = "create_group";
 export const CREATE_GROUP_SUCCESS = "create_group:success";
 export const CREATE_GROUP_FAILURE = "create_group:failure";
 
+export const GROUP_SELECTED = "group_selected";

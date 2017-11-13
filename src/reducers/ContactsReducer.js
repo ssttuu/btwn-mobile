@@ -46,16 +46,12 @@ export default (state = INITIAL_STATE, action) => {
         case GET_CONTACTS:
             return {...state};
         case GET_CONTACTS_SUCCESS:
-            console.log('GET_CONTACTS_SUCCESS');
-            console.log(action.payload);
             return {...state, synced: _.keyBy(action.payload.contacts, 'id')};
         case GET_CONTACTS_FAILURE:
             return {...state};
         case UPLOAD_CONTACTS:
             return {...state};
         case UPLOAD_CONTACTS_SUCCESS:
-            console.log('UPLOAD_CONTACTS_SUCCESS');
-            console.log(action.payload);
             return {...state, synced: _.keyBy(action.payload.contacts, 'id')};
         case UPLOAD_CONTACTS_FAILURE:
             return {...state};

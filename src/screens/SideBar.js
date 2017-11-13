@@ -42,10 +42,12 @@ const styles = {
         backgroundColor: 'orange'
     },
     groupsHeaderStyle: {
-        flexDirection: 'row'
+        flexDirection: 'row',
+        marginTop: 15,
     },
     groupsTextStyle: {
-        flex: 1
+        flex: 1,
+        paddingLeft: 10
     },
     addGroupStyle: {
         flex: 1

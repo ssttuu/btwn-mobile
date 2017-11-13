@@ -5,7 +5,7 @@ import _ from 'lodash';
 import {Actions} from "react-native-router-flux";
 import {GROUP_DETAIL_SCREEN} from "../RouterTypes";
 import {getContacts} from "../actions/ContactsActions";
-import {getGroups} from "../actions/GroupsActions";
+import {getGroups, groupSelected} from "../actions/GroupsActions";
 
 class GroupsList extends Component {
     componentWillMount() {
@@ -13,10 +13,12 @@ class GroupsList extends Component {
         this.props.getContacts();
         this.props.getGroups();
 
+        console.log('props', this.props);
         this.createDataSource(this.props);
     }
 
     componentWillReceiveProps(nextProps) {
+        console.log('nextProps', nextProps);
         this.createDataSource(nextProps);
     }
 
@@ -32,6 +34,7 @@ class GroupsList extends Component {
     }
 
     onRowPress(groupId) {
+        this.props.groupSelected({groupId});
         Actions.push(GROUP_DETAIL_SCREEN, {groupId});
         Actions.drawerClose();
     }
@@ -40,9 +43,7 @@ class GroupsList extends Component {
         const {user, contacts} = this.props;
         const memberIds = _.filter(group.member_ids, (mid) => mid !== user.id);
         const memberNames = _.map(memberIds, (mid) => {
-            console.log('mid', mid);
             const contact = contacts.synced[mid];
-            console.log('contact', contact);
             return `${contact.first_name} ${contact.last_name}`;
         });
         return (
@@ -52,7 +53,10 @@ class GroupsList extends Component {
 
     renderRow(group) {
         return (
-            <TouchableHighlight onPress={() => this.onRowPress(group.id)}>
+            <TouchableHighlight
+                style={styles.listItemStyle}
+                onPress={() => this.onRowPress(group.id)}
+            >
                 {this.renderMembers(group)}
             </TouchableHighlight>
         );
@@ -71,11 +75,18 @@ class GroupsList extends Component {
     }
 }
 
+const styles = {
+    listItemStyle: {
+        height: 20,
+        marginTop: 5,
+        marginBottom: 5,
+        paddingLeft: 20
+    }
+};
+
 const mapStateToProps = (state) => {
     const {groups, contacts, auth} = state;
-    console.log('MSTP: contacts');
-    console.log(contacts);
     return {groups, contacts, user: auth.user};
 };
 
-export default connect(mapStateToProps, {getContacts, getGroups})(GroupsList);
+export default connect(mapStateToProps, {getContacts, getGroups, groupSelected})(GroupsList);

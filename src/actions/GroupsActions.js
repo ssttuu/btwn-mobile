@@ -1,6 +1,6 @@
 import {
     CONTACT_PRESSED, CREATE_GROUP, CREATE_GROUP_FAILURE, CREATE_GROUP_SUCCESS, GET_GROUPS, GET_GROUPS_FAILURE,
-    GET_GROUPS_SUCCESS,
+    GET_GROUPS_SUCCESS, GROUP_SELECTED,
     SEARCH_TEXT_CHANGED
 } from "./types";
 import * as Groups from '../api/Groups';
@@ -41,4 +41,8 @@ export const getGroups = () => async (dispatch) => {
         .catch((err) => {
             dispatch({type: GET_GROUPS_FAILURE, payload: err});
         });
+};
+
+export const groupSelected = ({groupId}) => async (dispatch) => {
+    dispatch({type: GROUP_SELECTED, payload: groupId})
 };
