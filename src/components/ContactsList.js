@@ -27,14 +27,14 @@ class ContactsList extends Component {
         const {selected, onRowPress} = this.props;
         return <ContactListItem
             contact={contact}
-            selected={selected.indexOf(contact.id) >= 0}
-            onPress={() => onRowPress({id: contact.id})}
+            selected={selected[contact.phone_number] === true}
+            onPress={() => onRowPress(contact)}
         />
     }
 
     render() {
         return (
-            <View style={{flex: 1}}>
+            <View>
                 <ListView
                     enableEmptySections
                     dataSource={this.dataSource}
@@ -45,8 +45,4 @@ class ContactsList extends Component {
     }
 }
 
-const mapStateToProps = (state) => {
-    return {};
-};
-
-export default connect(mapStateToProps, {})(ContactsList);
+export default ContactsList;

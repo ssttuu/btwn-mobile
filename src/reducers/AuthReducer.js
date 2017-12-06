@@ -6,7 +6,7 @@ import {
 
 const INITIAL_STATE = {
     phone: '+16467249483',
-    verificationCode: null,
+    verificationCode: "1234",
     user: null,
     jwt: null,
     error: null,
@@ -23,8 +23,7 @@ export default (state = INITIAL_STATE, action) => {
         case SEND_VERIFICATION_CODE:
             return {...state, loading: true, error: null};
         case SEND_VERIFICATION_CODE_SUCCESS:
-            const {verificationCode} = action.payload;
-            return {...state, verificationCode, loading: false, error: null};
+            return {...state, loading: false, error: null};
         case SEND_VERIFICATION_CODE_FAILURE:
             return {...state, loading: false, error: action.payload};
         case LOGIN:

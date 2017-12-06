@@ -32,13 +32,18 @@ class ContactListItem extends Component {
 
     render() {
 
-        const {id, first_name, last_name, phone_number, joined} = this.props.contact;
-        console.log('this.props.contact', this.props.contact);
+        const {phone_number, first_name, last_name} = this.props.contact;
         const fullName = `${first_name} ${last_name}`;
-        const initials = `${first_name.charAt(0).toUpperCase()}${last_name.charAt(0).toUpperCase()}`;
+        let initials = '';
+        if (first_name !== null) {
+            initials += first_name.charAt(0).toUpperCase()
+        }
+        if (last_name !== null) {
+            initials += last_name.charAt(0).toUpperCase()
+        }
 
         return (
-            <TouchableWithoutFeedback onPress={() => this.props.onPress({id})}>
+            <TouchableWithoutFeedback onPress={() => this.props.onPress({phone_number})}>
                 <View style={styles.rowViewStyle}>
                     {this.renderIcon(initials, this.props.selected)}
                     <View>
@@ -47,7 +52,7 @@ class ContactListItem extends Component {
                         </Text>
                         <Text style={styles.phoneNumberStyle}>{phone_number}</Text>
                     </View>
-                    {this.renderJoinedIcon(joined)}
+                    {/*{this.renderJoinedIcon(joined)}*/}
                 </View>
             </TouchableWithoutFeedback>
         );

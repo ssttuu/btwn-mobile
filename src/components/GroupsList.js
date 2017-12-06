@@ -1,70 +1,66 @@
 import React, {Component} from 'react';
 import {Text, View, ListView, TouchableHighlight} from "react-native";
-import {connect} from 'react-redux';
 import _ from 'lodash';
-import {Actions} from "react-native-router-flux";
-import {GROUP_DETAIL_SCREEN} from "../RouterTypes";
-import {getContacts} from "../actions/ContactsActions";
-import {getGroups, groupSelected} from "../actions/GroupsActions";
+import {graphql} from "react-apollo";
+import {FormLabel} from "react-native-elements";
+import queryGroups from "../queries/queryGroups";
 
 class GroupsList extends Component {
     componentWillMount() {
-        // TODO: this is likely the wrong place to get contacts
-        this.props.getContacts();
-        this.props.getGroups();
-
-        console.log('props', this.props);
-        this.createDataSource(this.props);
+        console.log('this.props.data', this.props.data);
+        this.createDataSource(this.props.data);
     }
 
     componentWillReceiveProps(nextProps) {
         console.log('nextProps', nextProps);
-        this.createDataSource(nextProps);
+        this.createDataSource(nextProps.data);
     }
 
-    createDataSource({groups}) {
+    createDataSource(data) {
+        const {groups} = data;
+        console.log('GROUPS', groups);
         const ds = new ListView.DataSource({
             rowHasChanged: (r1, r2) => r1 !== r2
         });
 
-        // TODO: sort
-        const groupsList = _.values(groups);
-
-        this.dataSource = ds.cloneWithRows(groupsList);
-    }
-
-    onRowPress(groupId) {
-        this.props.groupSelected({groupId});
-        Actions.push(GROUP_DETAIL_SCREEN, {groupId});
-        Actions.drawerClose();
+        this.dataSource = ds.cloneWithRows(groups || []);
     }
 
     renderMembers(group) {
-        const {user, contacts} = this.props;
-        const memberIds = _.filter(group.member_ids, (mid) => mid !== user.id);
-        const memberNames = _.map(memberIds, (mid) => {
-            const contact = contacts.synced[mid];
-            return `${contact.first_name} ${contact.last_name}`;
+        console.log(group.members);
+        // const {user, contacts} = this.props;
+        // const memberIds = _.filter(group.member_ids, (mPhone) => mPhone !== user.phone_number);
+        const memberNames = _.map(group.members, (member) => {
+            return `${member.first_name} ${member.last_name}`;
         });
+
+        console.log(memberNames);
         return (
             <Text>{_.join(memberNames, ', ')}</Text>
         );
     }
 
     renderRow(group) {
+        console.log('group', group);
         return (
             <TouchableHighlight
                 style={styles.listItemStyle}
-                onPress={() => this.onRowPress(group.id)}
+                onPress={() => this.props.onRowPress(group.id)}
             >
-                {this.renderMembers(group)}
+                <View>
+                    {this.renderMembers(group)}
+                </View>
             </TouchableHighlight>
         );
     }
 
     render() {
+        console.log('render')
         return (
-            <View style={{flex: 1}}>
+            <View>
+                <FormLabel>
+                    Groups list
+                </FormLabel>
                 <ListView
                     enableEmptySections
                     dataSource={this.dataSource}
@@ -73,20 +69,25 @@ class GroupsList extends Component {
             </View>
         );
     }
+
+
 }
 
 const styles = {
     listItemStyle: {
-        height: 20,
-        marginTop: 5,
-        marginBottom: 5,
-        paddingLeft: 20
+        minHeight: 60,
+        paddingTop: 10,
+        paddingBottom: 10,
+        paddingLeft: 20,
+        backgroundColor: 'grey'
     }
 };
 
-const mapStateToProps = (state) => {
-    const {groups, contacts, auth} = state;
-    return {groups, contacts, user: auth.user};
-};
 
-export default connect(mapStateToProps, {getContacts, getGroups, groupSelected})(GroupsList);
+export default graphql(queryGroups, {
+    options: (props) => {
+        console.log(props);
+        const {phoneNumber} = props;
+        return {variables: {phoneNumber}}
+    }
+})(GroupsList);

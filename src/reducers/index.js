@@ -4,6 +4,7 @@ import GroupsReducer from "./GroupsReducer";
 import NewGroupReducer from "./NewGroupReducer";
 import ContactsReducer from "./ContactsReducer";
 import CurrentGroupReducer from "./CurrentGroupReducer";
+import LocationReducer from "./LocationReducer";
 
 export default combineReducers({
     auth: AuthReducer,
@@ -11,4 +12,5 @@ export default combineReducers({
     newGroup: NewGroupReducer,
     groups: GroupsReducer,
     currentGroup: CurrentGroupReducer,
+    location: LocationReducer,
 });

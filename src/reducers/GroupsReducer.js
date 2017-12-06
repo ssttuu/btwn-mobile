@@ -15,14 +15,14 @@ export default (state = INITIAL_STATE, action) => {
             return {...state};
         case CREATE_GROUP_SUCCESS:
             const group = action.payload;
-            return {...state, [group.id]: group};
+            return {...state, [group.phone_number]: group};
         case CREATE_GROUP_FAILURE:
             return {...state};
         case GET_GROUPS:
             return {...state};
         case GET_GROUPS_SUCCESS:
-            const contactsById = _.keyBy(action.payload.groups, 'id');
-            return {...state, ...contactsById};
+            const contactsByPhoneNumber = _.keyBy(action.payload.groups, 'phone_number');
+            return {...state, ...contactsByPhoneNumber};
         case GET_GROUPS_FAILURE:
             return {...state};
         default:

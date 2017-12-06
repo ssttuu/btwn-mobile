@@ -1,20 +1,28 @@
 import React, {Component} from 'react';
 import {ActivityIndicator, View} from "react-native";
-import {Button, FormInput, FormLabel, FormValidationMessage} from "react-native-elements";
-import {connect} from 'react-redux';
-import {checkCurrentUser, phoneChanged, sendVerificationCode} from "../../actions/AuthActions";
+import {Button, FormInput, FormLabel} from "react-native-elements";
+import gql from 'graphql-tag'
+import {graphql} from "react-apollo";
+
 
 class EnterPhoneNumber extends Component {
-    componentWillMount() {
-        this.props.checkCurrentUser()
-    }
+    constructor(props) {
+        super(props);
 
-    onPhoneChanged(phone) {
-        this.props.phoneChanged(phone)
+        this.state = {phoneNumber: '+16467249483'};
     }
 
     onButtonPress() {
-        this.props.sendVerificationCode({phoneNumber: this.props.phone});
+        const {phoneNumber} = this.state;
+
+        this.props.mutate({
+            variables: {phoneNumber}
+        }).then((data) => {
+            this.props.history.push({
+                pathname: '/enter-verification-code',
+                state: {phoneNumber}
+            })
+        })
     }
 
     renderButton() {
@@ -26,33 +34,33 @@ class EnterPhoneNumber extends Component {
             <Button
                 raised
                 iconRight={{name: 'phone'}}
-                title='Verify'
+                title='Send Verification Code'
                 backgroundColor='orange'
                 onPress={() => this.onButtonPress()}
             />
         );
     }
 
+
     render() {
         return (
             <View>
                 <FormLabel>Phone</FormLabel>
                 <FormInput
-                    onChangeText={phone => this.onPhoneChanged(phone)}
-                    value={this.props.phone}
-                    placeholder="+123456789"
+                    onChange={event => this.setState({title: event.target.value})}
+                    value={this.state.phoneNumber}
+                    placeholder="+16467249483"
                 />
-                <FormValidationMessage>{this.props.error}</FormValidationMessage>
                 {this.renderButton()}
             </View>
         );
     }
 }
 
-const mapStateToProps = (state) => {
-    const {phone, loading, error} = state.auth;
+const mutation = gql`
+mutation SendCode($phoneNumber: String) {
+    sendVerificationCode(phone_number: $phoneNumber)
+}
+`;
 
-    return {phone, loading, error};
-};
-
-export default connect(mapStateToProps, {phoneChanged, sendVerificationCode, checkCurrentUser})(EnterPhoneNumber);
+export default graphql(mutation)(EnterPhoneNumber);

@@ -1,21 +1,34 @@
 import React, {Component} from 'react';
 import {ActivityIndicator, View} from "react-native";
 import {Button, FormInput, FormLabel, FormValidationMessage} from "react-native-elements";
-import {connect} from 'react-redux';
-import {verificationCodeChanged, login, checkCurrentUser} from "../../actions/AuthActions";
+import gql from 'graphql-tag';
+import {graphql} from "react-apollo";
+
 
 class EnterVerificationCode extends Component {
-    componentWillMount() {
-        this.props.checkCurrentUser()
+    constructor(props) {
+        super(props);
+
+        this.state = {code: ''}
     }
 
-    onVerificationCodeChanged(phone) {
-        this.props.verificationCodeChanged(phone);
+    componentWillMount() {
     }
 
     onButtonPress() {
-        const {phone, verificationCode} = this.props;
-        this.props.login({phoneNumber: phone, code: verificationCode});
+        const {phoneNumber} = this.props.location.state;
+        const {code} = this.state;
+
+        console.log(this.state, this.props);
+
+        this.props.mutate({
+            variables: {phoneNumber, code}
+        }).then((data) => {
+            this.props.history.push({
+                pathname: '/home',
+                state: {phoneNumber}
+            })
+        })
     }
 
     renderButton() {
@@ -38,8 +51,8 @@ class EnterVerificationCode extends Component {
             <View>
                 <FormLabel>Verification Code</FormLabel>
                 <FormInput
-                    onChangeText={code => this.onVerificationCodeChanged(code)}
-                    value={this.props.verificationCode}
+                    onChangeText={code => this.setState({code})}
+                    value={this.state.code}
                     placeholder="1234"
                 />
                 <FormValidationMessage>{this.props.error}</FormValidationMessage>
@@ -48,10 +61,13 @@ class EnterVerificationCode extends Component {
         );
     }
 }
-const mapStateToProps = (state) => {
-    const {phone, verificationCode, loading, error} = state.auth;
 
-    return {phone, verificationCode, loading, error};
-};
+const mutation = gql`
+mutation Login($phoneNumber: String!, $code: String!) {
+    login(phone_number: $phoneNumber, code: $code) {
+        jwt
+    }
+}
+`;
 
-export default connect(mapStateToProps, {verificationCodeChanged, login, checkCurrentUser})(EnterVerificationCode);
+export default graphql(mutation)(EnterVerificationCode)

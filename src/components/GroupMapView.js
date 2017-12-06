@@ -1,19 +1,22 @@
 import React, {Component} from 'react';
-import {Text, View} from "react-native";
-import {connect} from 'react-redux';
+import {View} from "react-native";
+import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
 
 class GroupMapView extends Component {
     render() {
+        console.log('GroupMapView', this.props);
         return (
-            <View style={{flex: 1}}>
-                <Text>Group Map View</Text>
+            <View style={{height: '100%'}}>
+                <MapView style={{height: '100%'}}
+                    provider={PROVIDER_GOOGLE}
+                    initialRegion={this.props.region}
+                    showsUserLocation
+                    showsMyLocationButton
+                />
+                {this.props.children}
             </View>
         );
     }
 }
 
-const mapStateToProps = (state) => {
-    return {};
-};
-
-export default connect(mapStateToProps, {})(GroupMapView);
+export default GroupMapView;

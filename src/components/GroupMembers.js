@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
-import {Text, View} from "react-native";
-import {connect} from 'react-redux';
+import {ActivityIndicator, Text, View} from "react-native";
 import * as _ from 'lodash';
 import {Avatar} from "react-native-elements";
 
@@ -10,10 +9,9 @@ class GroupMembers extends Component {
             console.log(member);
             const {first_name, last_name} = member;
             const initials = `${first_name.charAt(0).toUpperCase()}${last_name.charAt(0).toUpperCase()}`;
-            return (<View key={member.id} style={{padding: 2, paddingRight: 0}}>
-
+            return (<View key={member.phone_number} style={{padding: 2, paddingRight: 0}}>
                 <Avatar
-                    small
+                    medium
                     rounded
                     title={initials}
                 />
@@ -23,17 +21,17 @@ class GroupMembers extends Component {
     }
 
     render() {
-        const {members} = this.props;
+        console.log('GroupMembers', this.props);
+        const {loading, group} = this.props;
+        if (loading) {
+            return (<ActivityIndicator style={{height: '100%'}} size="large"/>)
+        }
         return (
-            <View style={{flex: 1, flexDirection: 'row'}}>
-                {this.renderIcons(members)}
+            <View style={{flexDirection: 'row', position: 'absolute', }}>
+                {this.renderIcons(group.members)}
             </View>
         );
     }
 }
 
-const mapStateToProps = (state) => {
-    return {};
-};
-
-export default connect(mapStateToProps, {})(GroupMembers);
+export default GroupMembers;

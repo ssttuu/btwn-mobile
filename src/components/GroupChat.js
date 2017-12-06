@@ -14,8 +14,4 @@ class GroupChat extends Component {
     }
 }
 
-const mapStateToProps = (state) => {
-    return {};
-};
-
-export default connect(mapStateToProps, {})(GroupChat);
+export default GroupChat;
