@@ -13,11 +13,11 @@ class GroupDetail extends Component {
         return (
             <View>
                 <GroupMapView region={{
-                    latitude: 37.78825,
-                    longitude: -122.4324,
+                    latitude: 40.6833222,
+                    longitude: -73.9301036,
                     latitudeDelta: 0.0922,
                     longitudeDelta: 0.0421,
-                }}>
+                }} group={group}>
                     <GroupMembers loading={loading} group={group}/>
 
                     {/*/!*<GroupPlaces/>*!/*/}
@@ -35,7 +35,11 @@ query GetGroup($phoneNumber: String!, $id: String!) {
         members {
             phone_number,
             first_name,
-            last_name
+            last_name,
+            location {
+                lat,
+                lng
+            }
         }
     }
 }

@@ -3,9 +3,14 @@ import {View} from "react-native";
 import GroupsList from "../components/GroupsList";
 import ActionButton from "react-native-action-button";
 import NavBar from "../components/NavBar";
-import {Icon} from "react-native-elements";
+import {Button, Icon} from "react-native-elements";
+
 
 class Groups extends Component {
+    componentWillMount() {
+
+    }
+
     render() {
         const {phoneNumber} = this.props.match.params;
         console.log(this.props);
@@ -14,6 +19,14 @@ class Groups extends Component {
                 <NavBar title={{title: this.props.location.pathname}}
                         leftButton={<Icon name="menu" style={{padding: 15}}/>}
                         />
+                <Button
+                    title="Admin"
+                    onPress={() => {
+                        this.props.history.push({
+                            pathname: `/users/${phoneNumber}/groups-admin`
+                        })
+                    }}
+                />
                 <GroupsList
                     phoneNumber={phoneNumber}
                     onRowPress={(groupId) => this.props.history.push(`/users/${phoneNumber}/groups/${groupId}`)}
